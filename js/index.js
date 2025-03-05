@@ -33,12 +33,18 @@ async function invertLayer(use_wasm=true) {
         return;
     }
     const layer = layers[0];
-    console.log("target layer", layer.name);
 
     core.executeAsModal(async () => {
         const imageObj = await imaging.getPixels({
             layerID: layer.id,
         });
+        const hasAlpha = imageObj.imageData.hasAlpha;
+        const components = imageObj.imageData.components;
+        console.log("hasAlpha", hasAlpha, "components", components);
+        if (components < 3) {
+            console.log("This layer is not RGB image.");
+            return;
+        }
         const pixelData = new Uint8Array(await imageObj.imageData.getData());
         const b = imageObj.sourceBounds;
         const width = b.right - b.left;
@@ -46,9 +52,9 @@ async function invertLayer(use_wasm=true) {
         console.log(`${width} x ${height} start`);
         const start_time = new Date().getTime();
         if (use_wasm) {
-            invert_colors(pixelData)
+            invert_colors(pixelData, hasAlpha)
         } else {
-            for (let i = 0; i < pixelData.length; i += 4) {
+            for (let i = 0; i < pixelData.length; i += components) {
                 pixelData[i] = 255 - pixelData[i]; // R
                 pixelData[i + 1] = 255 - pixelData[i + 1]; // G
                 pixelData[i + 2] = 255 - pixelData[i + 2]; // B
@@ -58,7 +64,7 @@ async function invertLayer(use_wasm=true) {
         const imageData = await imaging.createImageDataFromBuffer(pixelData, {
             width: width,
             height: height,
-            components: 4,
+            components: components,
             colorSpace: "RGB",
         });
         await imaging.putPixels({
