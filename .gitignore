@@ -1,0 +1,33 @@
+# Rust & WASM Build
+/pkg/
+/target/
+.cargo/
+Cargo.lock
+rust_pkg/
+
+# Node.js & UXP Plugin Cache
+/node_modules/
+/dist/
+/*.log
+/uxp_plugin.log
+/.vscode/
+/.DS_Store
+
+node_modules
+dist/
+target/
+pkg/
+wasm/
+wasm-pack.log
+*.wasm.js
+
+# Webpack
+/build/
+/.cache/
+/tmp/
+
+# OS-specific files
+Thumbs.db
+ehthumbs.db
+
+uxp_pkg/*.wasm

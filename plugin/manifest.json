@@ -1,0 +1,25 @@
+{
+    "manifestVersion": 5,
+    "id": "harayoki.uxp_asm_sample",
+    "name": "Invert Colors",
+    "version": "1.0.0",
+    "description": "uxp & wasm sample",
+    "author": "harayoki",
+    "host": {
+        "app": "PS",
+        "minVersion": "23.0.0"
+    },
+    "main": "./index.js",
+    "entrypoints": [
+        {
+            "type": "command",
+            "id": "invert_without_wasm",
+            "label": "Invert Colors"
+        },
+        {
+            "type": "command",
+            "id": "invert_with_wasm",
+            "label": "Invert Colors (WASM)"
+        }
+    ]
+}
